@@ -5,8 +5,13 @@ import compress from 'astro-compress'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://daily-rust.uta8a.net',
   compressHTML: true,
-  integrations: [mdx(), tailwind({
-    applyBaseStyles: false,
-  }), compress()],
+  integrations: [
+    mdx(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    compress(),
+  ],
 })
