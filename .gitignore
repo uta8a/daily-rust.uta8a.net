@@ -17,9 +17,6 @@ yarn-error.log*
 # macOS-specific files
 .DS_Store
 
-# vscode settings and dictionaries
-.vscode
-
 # webstorm settings and dictionaries
 .idea
 
