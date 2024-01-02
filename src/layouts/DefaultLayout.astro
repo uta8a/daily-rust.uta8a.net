@@ -8,8 +8,8 @@ import Footer from '../components/Footer.astro'
 const {
   title = 'Daily Rust',
   description = '習慣的にRustを書くようにしたい',
-  url,
-  image = '/social-preview-image.png',
+  url = Astro.site,
+  image = 'social-preview-image.png', // { Astro.site = https://example.com/ } + { image }
   author = 'uta8a',
   slug = undefined,
 } = Astro.props
@@ -24,15 +24,7 @@ const {
     <!-- favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <SiteMeta
-      title={title}
-      description={description.substring(0, 100)}
-      url={Astro.site
-        ? `${Astro.site}/${title.toLowerCase().replaceAll(' ', '-')}`
-        : `https://accessible-astro.dev/${title.toLowerCase().replaceAll(' ', '-')}`}
-      image={image}
-      author={author}
-    />
+    <SiteMeta title={title} description={description.substring(0, 100)} url={url} image={image} author={author} />
   </head>
   <!-- auto scroll when devServer mode, see https://github.com/ritwickdey/vscode-live-server/issues/231 -->
   <body style={import.meta.env.MODE !== 'development' ? 'height: 100%;' : 'min-height: 100%;'}>
