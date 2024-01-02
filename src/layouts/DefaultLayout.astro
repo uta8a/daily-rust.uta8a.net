@@ -11,6 +11,7 @@ const {
   url,
   image = '/social-preview-image.png',
   author = 'Mark Teekman',
+  slug = undefined,
 } = Astro.props
 ---
 
@@ -34,7 +35,7 @@ const {
     />
   </head>
   <body>
-    <Header />
+    <Header slug={slug} />
     <main id="main-content" transition:animate="fade">
       <slot />
     </main>
@@ -104,6 +105,11 @@ const {
             stroke: white;
           }
         }
+      }
+      .notification {
+        gap: 0.25rem;
+        padding: 0.75rem;
+        border-radius: 0.75rem;
       }
     </style>
   </body>
