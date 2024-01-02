@@ -8,6 +8,7 @@ const articles = await Astro.glob('./articles/*.mdx')
   <section class="my-10">
     <div class="container">
       <h2 class="mb-10 text-5xl">デイリーラスト</h2>
+      <p class="mb-10">継続してRustを学ぼう</p>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {
           articles.map((article) => {
