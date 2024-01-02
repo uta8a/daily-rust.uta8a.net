@@ -4,6 +4,8 @@ set -euxo pipefail
 
 # Inputs: $TITLE, $DESCRIPTION
 
+mkdir -p src/pages/articles
+
 # use jq , parse JSON ["a","b","c"] and pick a random one per length
 RANDOM_ICON=$(jq -r --arg rand $RANDOM --argjson arr $(cat ./_scripts/data.json) '.[$rand|tonumber % ($arr|length)]' <<< cat ./_scripts/data.json)
 
