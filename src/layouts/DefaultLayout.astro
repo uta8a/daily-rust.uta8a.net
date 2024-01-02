@@ -34,7 +34,8 @@ const {
       author={author}
     />
   </head>
-  <body>
+  <!-- auto scroll when devServer mode, see https://github.com/ritwickdey/vscode-live-server/issues/231 -->
+  <body style={import.meta.env.MODE !== 'development' ? 'height: 100%;' : 'min-height: 100%;'}>
     <Header slug={slug} />
     <main id="main-content" transition:animate="fade">
       <slot />
@@ -71,7 +72,8 @@ const {
       // sticky footer on low content pages
       html,
       body {
-        height: 100%;
+        // specify height or min-height in html body style tag
+        // see https://github.com/ritwickdey/vscode-live-server/issues/231
         overflow-x: hidden;
       }
 
