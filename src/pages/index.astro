@@ -11,17 +11,27 @@ const articles = await Astro.glob('./articles/*.mdx')
       <p class="mb-10">継続してRustを学ぼう</p>
       <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {
-          articles.map((article) => {
-            return (
-              <Feature
-                icon={`mdi:${article.frontmatter.icon}`}
-                title={`${article.frontmatter.title}`}
-                id={article.frontmatter.id}
-              >
-                {article.frontmatter.description}
-              </Feature>
-            )
-          })
+          articles.sort((a, b) => {
+            // sort by created_at
+            const diff =
+              new Date(a.frontmatter.created_at) === new Date(b.frontmatter.creaated_at)
+                ? 0
+                : new Date(a.frontmatter.created_at) > new Date(b.frontmatter.created_at)
+                ? -1
+                : 1
+            return diff
+          }) &&
+            articles.map((article) => {
+              return (
+                <Feature
+                  icon={`mdi:${article.frontmatter.icon}`}
+                  title={`${article.frontmatter.title}`}
+                  id={article.frontmatter.id}
+                >
+                  {article.frontmatter.description}
+                </Feature>
+              )
+            })
         }
       </div>
     </div>
