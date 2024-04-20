@@ -17,4 +17,54 @@ import { Notification } from 'accessible-astro-components'
 
 # Rust製OSSにコントリビュートするために調べてみる
 
+なんとなくOSSへ貢献したいという憧れが昔からあって、実際にドキュメントのtypo修正とかは送ったことがあるのだけど、今年はそれ以上のことがしたい。
 
+貢献したいOSSに特にこだわりはないけれど、候補をあげてみることにする。
+
+## Rustで何がしたいか
+
+自分のやりたいことを支えるOSSに貢献したら良い感じがする。
+
+- WebのバックエンドとしてRustを使いたい
+  - フレームワークの依存に入っているライブラリをリストアップしてみる
+- コンパイラ自体への興味
+  - rustcだけじゃなく、最近だとフロントエンドツールチェインを見てみるのもいいかも
+
+今のところこの2つくらいか
+
+## 何を得たいか
+
+- Rustを書く機会
+  - 実践に近そうなコードを書いて課題に出会いたい
+- OSSへ貢献することへの憧れをなんかいい感じに行動にして満足する
+  - 自己満足
+
+## やらないこと
+
+CLIツール系はあまり興味がない。組み込みも再現が難しそうなので今はパス。正直RISC-Vのボード持っているからRISC-VでのRust利用には興味があるけれど...
+
+## 探す
+
+2つに分けて探す。
+
+### Webフレームワークの依存調査
+
+[Are we web yet?](https://github.com/rust-lang/arewewebyet) をみる。メンテされてそう。
+
+色々眺めてみた感想
+
+- [Deployment](https://www.arewewebyet.org/topics/deploy/)にUnikernelsの項目がある！この辺気になってたし見てみようかな
+- Deploymentのaws lambdaも気になる
+- [Logging](https://www.arewewebyet.org/topics/logging/) とかは初手取りかかりやすいかも？
+
+なんかもうこのarewewebyetのリンクのパッケージを見ていくといいのではという気持ちになってきた。
+一旦その方針で行く。
+
+### コンパイラ周辺知識を使いそうなOSS調査
+
+- https://github.com/rust-unofficial/awesome-rust awesomeを見るのはあり
+- https://zenn.dev/togami2864/articles/e81b51dac0b155 この記事よくまとまっている
+
+## Next Action
+
+- 片っ端から気になるOSSのリポジトリ・issueを眺めてみたり使ってみたりしよう！
