@@ -24,7 +24,7 @@ icon: "$RANDOM_ICON"
 
 {/* import */}
 
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import { Notification } from 'accessible-astro-components'
 
 {/* content */}

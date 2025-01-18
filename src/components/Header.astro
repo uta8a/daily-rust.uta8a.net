@@ -1,7 +1,7 @@
 ---
 import Navigation from '../components/Navigation.astro'
 import { SkipLinks } from 'accessible-astro-components'
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 const { slug } = Astro.props
 ---
 
@@ -34,7 +34,7 @@ const { slug } = Astro.props
     .type-icon a {
       display: block;
 
-      [astro-icon] {
+      [data-icon] {
         margin-top: -4px;
         width: 30px;
 
@@ -44,7 +44,7 @@ const { slug } = Astro.props
       }
 
       &:hover {
-        [astro-icon] path {
+        [data-icon] path {
           fill: var(--action-color-state);
         }
       }

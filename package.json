@@ -11,26 +11,28 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^2.0.2",
-    "@astrojs/partytown": "^2.0.2",
-    "@astrojs/tailwind": "^5.0.4",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "@typescript-eslint/parser": "^5.50.0",
-    "accessible-astro-components": "^2.3.3",
-    "astro": "^4.0.7",
-    "astro-compress": "^2.0.6",
-    "astro-icon": "^0.7.3",
-    "eslint": "^8.33.0",
-    "eslint-plugin-astro": "^0.23.0",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "prettier": "^2.8.3",
-    "prettier-plugin-astro": "^0.8.0",
-    "prettier-plugin-tailwindcss": "^0.2.2",
-    "sass": "^1.49.9",
-    "svgo": "^2.8.0",
-    "tailwindcss": "^3.2.7"
+    "@astrojs/mdx": "^4.0.6",
+    "@astrojs/partytown": "^2.1.3",
+    "@astrojs/tailwind": "^5.1.4",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "accessible-astro-components": "^3.0.1",
+    "astro": "^5.1.7",
+    "astro-compress": "^2.3.6",
+    "astro-icon": "^1.1.5",
+    "eslint": "^9.18.0",
+    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "prettier": "^3.4.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.6.10",
+    "sass": "^1.83.4",
+    "svgo": "^3.3.2",
+    "tailwindcss": "^3.4.17"
   },
   "dependencies": {
-    "marked": "^11.1.1"
+    "@iconify-json/carbon": "^1.2.5",
+    "@iconify-json/mdi": "^1.2.2",
+    "marked": "^15.0.6"
   }
 }
