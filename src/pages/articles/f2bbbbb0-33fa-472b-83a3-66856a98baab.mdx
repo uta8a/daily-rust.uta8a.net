@@ -10,11 +10,155 @@ icon: "zip-box-outline"
 
 {/* import */}
 
-import { Icon } from 'astro-icon'
+import { Icon } from 'astro-icon/components'
 import { Notification } from 'accessible-astro-components'
 
 {/* content */}
 
 # actix-http-test を調べる
 
+crateを調べたメモを書いていく。
 
+actix-http-test を調べる。
+
+# モチベーション
+
+[arewewebyet](https://www.arewewebyet.org/) のcrateを一個ずつ満足いくまで触っていくことにした。Testingを先に学べばその後crateを色々触った時にテストと組み合わせられそうなので先にTestingから学ぶ。
+
+# actix-http-test
+
+[Testing](https://www.arewewebyet.org/topics/testing/) の一番上にあった。
+
+- [crates.ioのページ](https://crates.io/crates/actix-http-test)
+- [ドキュメント](https://docs.rs/actix-http-test/latest/actix_http_test/)
+
+ドキュメントにはStructが1つ、Functionが3つしかない。`test_server` のところのexampleを動かす。
+
+```rust
+use actix_http::{Error, HttpService, Response, StatusCode};
+use actix_http_test::test_server;
+use actix_service::{fn_service, map_config, ServiceFactoryExt as _};
+
+fn main() {}
+
+#[actix_rt::test]
+async fn test_example() {
+    let srv = test_server(|| {
+        HttpService::build()
+            .h1(fn_service(
+                |req| async move { Ok::<_, Error>(Response::ok()) },
+            ))
+            .tcp()
+            .map_err(|_| ())
+    })
+    .await;
+
+    let req = srv.get("/");
+    let response = req.send().await.unwrap();
+
+    assert_eq!(response.status(), StatusCode::OK);
+}
+```
+
+```sh
+cargo add actix-http-test@=3.2.0
+cargo add actix_http
+cargo add actix_service
+cargo add actix_rt
+```
+
+`cargo add` は勝手に `_` を `-` に変えてくれるっぽい。便利。
+
+```sh
+$ cargo test
+...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.84s
+     Running unittests src/main.rs (target/debug/deps/actix_http_test_playground-c9be87a22e8bc282)
+
+running 1 test
+test test_example ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+```
+
+okになったので動いてそう。
+
+`srv` がテストサーバになっていて、HTTP/1 protocolを使うサーバを `.h1()` メソッドで立てて、内側の `fn_service()` がServiceFactoryになっている。
+
+Factoryパターンってやつかな？
+聞いたことがあるだけなので調べた。どうやら、インスタンスを生成する時に、直接生成するのではなくFactoryを介して生成することで、生成部分のコードを別の場所に切り離す手法っぽい。例えば引数に応じて分岐が存在するとする。
+
+```rust
+fn return_food_gram(like_fruit: bool) -> Box<dyn Food> {
+    let food = if like_fruit {
+        Box::new(Apple)
+    } else {
+        Box::new(Meat)
+    };
+    food.weight()
+}
+```
+
+これはFactoryパターンを使って書き換えると
+
+```rust
+trait Food {
+    fn weight(&self) -> u32;
+}
+
+struct Apple;
+impl Food for Apple {
+    fn weight(&self) -> u32 {
+        100
+    }
+}
+
+struct Meat;
+impl Food for Meat {
+    fn weight(&self) -> u32 {
+        200
+    }
+}
+
+struct FoodFactory;
+
+
+impl FoodFactory {
+    fn new(like_fruit: bool) -> Box<dyn Food> {
+        if like_fruit {
+            Box::new(Apple)
+        } else {
+            Box::new(Meat)
+        }
+    }
+}
+
+fn return_food_gram(like_fruit: bool) -> u32 {
+    FoodFactory::new(like_fruit).weight()
+}
+```
+
+多分こんな感じになる。今回の場合、`fn_service()` がFactoryになっていて、 `like_fruit` のところに `req -> Result<Response, Error>` のシグネチャを持つクロージャが入っている感じ。
+
+`FnServiceFactory` は `new()`, `clone()`, `call()`, `new_service()` のimplementationを持つ。
+
+この `h1(fn_service())` はどのリクエストに対しても `Ok` を返すので、例えば `let req = srv.get("/");` を `let req = srv.get("/hoge");` に変えてもテストが通る。
+
+なんとなく理解した。この `test_server()` はE2Eでサーバを立ち上げてインテグレーションテストをするためのものだろう。
+
+<Notification type="info">
+`actix-http-test` はactix-webのサーバが建てられる、E2Eテスト用のcrate
+</Notification>
+
+さて、じゃあこのサーバは実際にhttpリクエストを受け付けるのか、それともモックなのかが気になる。
+
+[意外とさっくり見つかった](https://docs.rs/actix-http-test/3.2.0/src/actix_http_test/lib.rs.html#59-62)
+
+```rust
+pub async fn test_server<F: ServerServiceFactory<TcpStream>>(factory: F) -> TestServer {
+    let tcp = net::TcpListener::bind("127.0.0.1:0").unwrap();
+    test_server_with_addr(tcp, factory).await
+}
+```
+
+この `net::TcpListener::bind` は実際に `std::net` を使っている。サーバが実際に立ち上がっている。なるほどなあ。
